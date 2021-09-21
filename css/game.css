@@ -1,0 +1,119 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: "Roboto", sans-serif;
+	font-weight: 300;
+}
+body {
+	width: 100%;
+	height: 100vh;
+	background-image: url("../img/banner.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	backdrop-filter: brightness(50%);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.infoGame {
+	position: absolute;
+	top: 50px;
+	left: 50px;
+}
+.infoGame__score,
+.infoGame__lifes {
+	font-size: 30px;
+	font-weight: 700;
+}
+.infoGame__score {
+	color: #fff;
+}
+.infoGame__lifes {
+	color: red;
+}
+
+.home {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 60px;
+	height: 60px;
+	background-color: #0f4c75;
+
+	border-radius: 0px 0px 0px 30px;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: all 0.5s ease-in-out;
+}
+.home:hover {
+	background-color: #166397;
+}
+.home__icon {
+	color: whitesmoke;
+	font-size: 28px;
+}
+
+.gameOver {
+	position: absolute;
+	top: -100vh;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background-color: #000000ec;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	text-align: center;
+	transition: top 0.4s ease-in-out;
+}
+.gameOver__logo {
+	color: #ff0000;
+	font-size: 150px;
+	margin-bottom: 20px;
+}
+.gameOver__title {
+	font-size: 50px;
+	font-weight: 700;
+	margin-bottom: 20px;
+	color: #ff0000;
+	font-family: "Pacifico", cursive;
+}
+
+.gameOver__maxScore,
+.gameOver__info {
+	font-size: 24px;
+	color: whitesmoke;
+	margin-bottom: 25px;
+}
+#maxScore {
+	font-weight: 700;
+}
+
+.gameOver__btnHome {
+	width: 180px;
+	height: 50px;
+	cursor: pointer;
+	border-radius: 5px;
+	border: none;
+	outline: none;
+	text-align: center;
+	line-height: 50px;
+
+	text-decoration: none;
+	background-color: #0f4c75;
+	color: whitesmoke;
+	font-size: 18px;
+	font-weight: 700;
+	transition: all 0.25s ease-in-out;
+}
+.gameOver__btnHome:hover {
+	background-color: #166397;
+}
+
+.gameOver__icon {
+	margin-right: 5px;
+}

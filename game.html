@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Snake Project | Game</title>
+		<link rel="stylesheet" href="css/game.css" />
+		<link rel="shortcut icon" href="img/snake.ico" type="image/x-icon" />
+		<script src="libs/p5.js"></script>
+		<script src="libs/functional-light.js"></script>
+		<script src="libs/p5js2functional.js"></script>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Roboto:wght@300;400;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap"
+			rel="stylesheet"
+		/>
+		<script
+			src="https://kit.fontawesome.com/6fc7def821.js"
+			crossorigin="anonymous"
+		></script>
+	</head>
+	<body>
+		<div class="home">
+			<a href="index.html" class="home__link">
+				<i class="fas fa-home home__icon"></i>
+			</a>
+		</div>
+
+		<div class="infoGame" id="infoGame">
+			<h2 class="infoGame__score" id="score"></h2>
+			<h2 class="infoGame__lifes" id="lifes"></h2>
+		</div>
+
+		<div class="gameOver" id="gameOver">
+			<i class="fas fa-book-dead gameOver__logo"></i>
+			<h3 class="gameOver__title">La Serpiente Se Murio!</h3>
+			<p class="gameOver__maxScore">Puntaje Maximo: <b id="maxScore">14</b></p>
+			<p class="gameOver__info">
+				si quieres volver a jugar oprime F5 o si quieres <br />
+				volver a la pagina principal dale click al boton de abajo
+			</p>
+			<a href="index.html" class="gameOver__btnHome">
+				<i class="fas fa-home gameOver__icon"></i>Página Principal
+			</a>
+		</div>
+
+		<div id="canvas-div">
+			<script src="js/propertys.js"></script>
+			<script src="js/functions.js"></script>
+			<script src="js/main.js"></script>
+		</div>
+	</body>
+</html>
