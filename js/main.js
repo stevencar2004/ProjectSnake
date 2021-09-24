@@ -134,7 +134,7 @@ function onTic(Mundo) {
 	}
 	// Gestor de Dificultad y Cambio de Mundos
 	if (Mundo.score >= 13 && Mundo.score < 22) {
-		// world.setAttribute("style", 'background-image: url("img/acuario.jpg");');
+		world.setAttribute("style", 'background-image: url("img/acuario.jpg");');
 		return update(Mundo, {
 			fondoInicial: "blue",
 			comidaImagen: pez,
@@ -145,7 +145,7 @@ function onTic(Mundo) {
 		});
 	}
 	if (Mundo.score >= 22 && Mundo.score < 30) {
-		// world.setAttribute("style", 'background-image: url("img/llamarada.jpg");');
+		world.setAttribute("style", 'background-image: url("img/llamarada.jpg");');
 		frameRate(velInicial + Mundo.score / 2);
 		return update(Mundo, {
 			fondoInicial: "#e85d04",
