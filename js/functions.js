@@ -8,7 +8,8 @@ function getRandomY() {
 }
 
 //Se ejecuta en el momento que nos quedamos sin vidas
-function gameOver() {
+function gameOver(Mundo) {
+	maxScore.innerHTML = Mundo.score;
 	modalGameOver.setAttribute("style", "top:0;");
 	noLoop();
 }
@@ -21,7 +22,6 @@ function moveSnake(snake, dir) {
 		snake.slice(0, length(snake) - 1),
 	);
 }
-
 //Cada vez que snake coche contra una pared retorna TRUE
 function gestorColisiones(mundo) {
 	const head = first(mundo.snake);
@@ -36,8 +36,14 @@ function gestorColisiones(mundo) {
 }
 
 //Cada vez que snake muerda su cola retornara TRUE
-function gestionarMordidas(snakeHead, snakeTail) {
-	const head = first(snakeHead);
+function gestionarMordidas(tail, head) {
+	if (isEmpty(tail)) {
+		return false;
+	} else if (JSON.stringify(first(rest(tail))) === JSON.stringify(head)) {
+		return true;
+	} else {
+		return gestionarMordidas(rest(tail), head);
+	}
 }
 
 // Cada vez que la serpiente coma retorna TRUE de lo contrario FALSE
@@ -51,8 +57,43 @@ function comerSnake(snake, food, dir) {
 	}
 }
 
-//Se precarga la imagen del bloqueMario
+// Cada vez que la serpiente choque con una trampa retornara TRUE
+// Cada vez que la serpiente choque con una trampa retornara TRUE
+function gestionarTrampas(snake, trampas) {
+	const head = first(snake);
+	const firstTrampa = first(trampas);
+	if (isEmpty(trampas)) {
+		return false;
+	}
+	if (head.x == firstTrampa.x && head.y == firstTrampa.y) {
+		return true;
+	} else {
+		return gestionarTrampas(snake, rest(trampas));
+	}
+}
+
+//Se precarga las imagenes del juego
 let marioBrick;
+let arbolJungla;
+let manzana;
+let tronco;
+let pez;
+let algas;
+let fuego;
+let carne;
+let bomba;
+let hoguera;
+let mina;
+
 function preload() {
 	marioBrick = loadImage("img/bricksMario.png");
+	manzana = loadImage("img/manzana.png");
+	tronco = loadImage("img/tronco.jpg");
+	pez = loadImage("img/pez.png");
+	algas = loadImage("img/algas.png");
+	fuego = loadImage("img/fuego.webp");
+	carne = loadImage("img/carne.png");
+	bomba = loadImage("img/bombs.svg");
+	hoguera = loadImage("img/hoguera2.png");
+	mina = loadImage("img/mina.png");
 }
