@@ -21,6 +21,9 @@ const mapa = [
 const dx = 20;
 const dy = 20;
 
+// Velocidad inicial del juego
+const velInicial = 8;
+
 // Tamaño de cada cuadrito del mapa
 const SIZE = 40;
 
@@ -36,3 +39,9 @@ const htmlScore = document.getElementById("score");
 
 // Enlace al elemento HTML el cual aparece solo cuando has perdido todas las vidas
 const modalGameOver = document.getElementById("gameOver");
+
+// Enlace al elemento HTML en el cual va aparecer el puntaje final
+const maxScore = document.getElementById("maxScore");
+
+// Enlace al elemento HTML el define el fondo del mundo actual
+const world = document.getElementById("world");
