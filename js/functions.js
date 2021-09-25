@@ -70,33 +70,37 @@ function gestorColisionesBarril(o, n) {
 			  gestorColisionesBarril(o, rest(n)))
 	);
 }
-let marioBrick,
-	arbolJungla,
-	manzana,
-	tronco,
-	pez,
-	algas,
-	fuego,
-	carne,
-	bomba,
-	hoguera,
-	mina,
-	donkeyNormal,
-	donkeyBarril,
-	imgBarril;
+
+//Se precarga las imagenes del juego
+
+//Se precarga las imagenes del juego
+let marioBrick;
+let arbolJungla;
+let manzana;
+let tronco;
+let pez;
+let algas;
+let fuego;
+let carne;
+let bomba;
+let hoguera;
+let mina;
+let donkeyNormal;
+let donkeyBarril;
+let imgBarril;
 
 function preload() {
-	(marioBrick = loadImage("img/bricksMario.png")),
-		(manzana = loadImage("img/manzana.png")),
-		(tronco = loadImage("img/tronco.jpg")),
-		(pez = loadImage("img/pez.png")),
-		(algas = loadImage("img/algas.png")),
-		(fuego = loadImage("img/fuego.webp")),
-		(carne = loadImage("img/carne.png")),
-		(bomba = loadImage("img/bombs.svg")),
-		(hoguera = loadImage("img/hoguera2.png")),
-		(mina = loadImage("img/mina.png")),
-		(donkeyNormal = loadImage("img/DonKeyKong.png")),
-		(donkeyBarril = loadImage("img/DonKeyTarro.jpg")),
-		(imgBarril = loadImage("img/barrilDonKey.png"));
+	marioBrick = loadImage("img/bricksMario.png");
+	manzana = loadImage("img/manzana.png");
+	tronco = loadImage("img/tronco.jpg");
+	pez = loadImage("img/pez.png");
+	algas = loadImage("img/algas.png");
+	fuego = loadImage("img/fuego.webp");
+	carne = loadImage("img/carne.png");
+	bomba = loadImage("img/bombs.svg");
+	hoguera = loadImage("img/hoguera2.png");
+	mina = loadImage("img/mina.png");
+	donkeyNormal = loadImage("img/DonKeyKong.png");
+	donkeyBarril = loadImage("img/DonKeyTarro.jpg");
+	imgBarril = loadImage("img/barrilDonKey.png");
 }
