@@ -178,8 +178,8 @@ function onTic(Mundo) {
 		});
 	}
 	// Gestor de Dificultad y Cambio de Mundos
-	if (Mundo.score >= 2 && Mundo.score < 8) {
-		// world.setAttribute("style", 'background-image: url("img/acuario.jpg");');
+	if (Mundo.score >= 12 && Mundo.score < 18) {
+		world.setAttribute("style", 'background-image: url("img/acuario.jpg");');
 		return update(Mundo, {
 			fondoInicial: "blue",
 			comidaImagen: pez,
@@ -188,8 +188,8 @@ function onTic(Mundo) {
 			snake: moveSnake(Mundo.snake, Mundo.dir),
 		});
 	}
-	if (Mundo.score >= 8 && Mundo.score < 12) {
-		// world.setAttribute("style", 'background-image: url("img/llamarada.jpg");');
+	if (Mundo.score >= 18 && Mundo.score < 25) {
+		world.setAttribute("style", 'background-image: url("img/llamarada.jpg");');
 		frameRate(velInicial + Mundo.score / 2);
 		return update(Mundo, {
 			fondoInicial: "#e85d04",
@@ -222,7 +222,7 @@ function onTic(Mundo) {
 			mostrarBarril: false,
 		});
 	}
-	if (Mundo.score >= 12) {
+	if (Mundo.score >= 25) {
 		// Aparece el simio
 		return update(Mundo, {
 			mostrarDonkey: true,
