@@ -1,1 +1,57 @@
-function drawSnake(a){fill(a.colorSnake),forEach(a.snake,(a=>{rect(a.x*dx+dx/2,a.y*dy+dy/2,dx,dy,8)}))}function drawComida(a){fill("#0a8652"),forEach(a,(a=>{image(Mundo.comidaImagen,a.x*dx+dx/2,a.y*dy+dy/2,dx,dy)}))}function drawTrampas(a){forEach(a.trampas,(r=>{image(a.trampaImagen,r.x*dx+dx/2,r.y*dy+dy/2,dx,dy)}))}function drawLifes(a){fill("red"),htmlLifes.innerHTML=a}function drawScore(a){htmlScore.innerHTML="Puntaje: "+a}function drawBarril(a){forEach(a,(a=>{image(imgBarril,a.x,a.y,2*SIZE,2*SIZE)}))}function drawDonkey(a){const r=first(a.donkey);r.x>=400&&r.x<=440?(forEach(a.donkey,(a=>{image(donkeyBarril,a.x,a.y,2*SIZE,2*SIZE)})),a.mostrarBarril=!0):forEach(a.donkey,(a=>{image(donkeyNormal,a.x,a.y,2*SIZE,2*SIZE)}))}
+// ///////// Dibujar Los Elementos del Juego En La Pantalla
+
+//Dibujamos nuestra Snake
+function drawSnake(Mundo) {
+	fill(Mundo.colorSnake);
+	forEach(Mundo.snake, (pos) => {
+		rect(pos.x * dx + dx / 2, pos.y * dy + dy / 2, dx, dy, 8);
+	});
+}
+
+// Funcion que me dibuja la comida en el mapa
+function drawComida(food) {
+	fill("#0a8652");
+	forEach(food, (pos) => {
+		// rect(pos.x * dx + dx / 2, pos.y * dy + dy / 2, dx, dy, 10);
+		image(Mundo.comidaImagen, pos.x * dx + dx / 2, pos.y * dy + dy / 2, dx, dy);
+	});
+}
+
+// Funcion que me dibuja las trampas
+function drawTrampas(Mundo) {
+	forEach(Mundo.trampas, (pos) => {
+		image(Mundo.trampaImagen, pos.x * dx + dx / 2, pos.y * dy + dy / 2, dx, dy);
+	});
+}
+
+//Dibujamos el numero de vidas que contenga la lista
+function drawLifes(lifes) {
+	htmlLifes.innerHTML = lifes;
+}
+
+//Dibujamos el marcador del juego
+function drawScore(score) {
+	htmlScore.innerHTML = "Puntaje: " + score;
+}
+
+//
+function drawBarril(barril) {
+	forEach(barril, (pos) => {
+		image(imgBarril, pos.x, pos.y, SIZE * 2, SIZE * 2);
+	});
+}
+
+//
+function drawDonkey(Mundo) {
+	const head = first(Mundo.donkey);
+	if (head.x >= 400 && head.x <= 440) {
+		forEach(Mundo.donkey, (pos) => {
+			image(donkeyBarril, pos.x, pos.y, SIZE * 2, SIZE * 2);
+		});
+		Mundo.mostrarBarril = true;
+	} else {
+		forEach(Mundo.donkey, (pos) => {
+			image(donkeyNormal, pos.x, pos.y, SIZE * 2, SIZE * 2);
+		});
+	}
+}

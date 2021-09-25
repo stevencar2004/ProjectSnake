@@ -1,185 +1,272 @@
-let {
-	append: append,
-	cons: cons,
-	first: first,
-	isEmpty: isEmpty,
-	isList: isList,
-	length: length,
-	rest: rest,
-	map: map,
-	forEach: forEach,
-} = functionalLight;
-function update(e, a) {
-	return Object.assign({}, e, a);
+// Importamos la libreria Functional Light
+let { append, cons, first, isEmpty, isList, length, rest, map, forEach } =
+	functionalLight;
+
+// Actualiza los atributos del objeto y retorna una copia profunda
+function update(data, attribute) {
+	return Object.assign({}, data, attribute);
 }
+
+// ///////// Propiedades del Mundo inicial
 let Mundo = {};
+
+// ///////// Funcion inicial del juego
 function setup() {
-	frameRate(velInicial),
-		createCanvas(WIDTH, HEIGHT),
-		(Mundo = {
-			fondoInicial: "#006400",
-			comidaImagen: manzana,
-			trampaImagen: bomba,
-			margenImagen: tronco,
-			score: 0,
-			lifes: ["❤", "❤", "❤"],
-			colorSnake: "",
+	frameRate(velInicial);
+	createCanvas(WIDTH, HEIGHT);
+
+	Mundo = {
+		fondoInicial: "#006400",
+		comidaImagen: manzana,
+		trampaImagen: bomba,
+		margenImagen: tronco,
+		score: 0,
+		lifes: ["❤", "❤", "❤"],
+		colorSnake: "",
+		snake: [
+			{ x: 7, y: 5 },
+			{ x: 6, y: 5 },
+		],
+		//Con esta opcion la serpiente inicia en un movimiento constante
+		dir: { x: 1, y: 0 },
+		// Indica la posicion de la comida
+		food: [{ x: 6, y: 4 }],
+		// Indica la posicion de las trampas
+		trampas: [
+			{ x: 4, y: 11 },
+			{ x: 20, y: 10 },
+			{ x: 30, y: 20 },
+			{ x: 25, y: 17 },
+		],
+		// Propeidades del donkey, solo se ejecutan en el ultimo mapa
+		mostrarDonkey: false,
+		donkey: [{ x: 0, y: 0 }],
+		dirDonkey: { x: 5, y: 0 },
+		// Propiedades del barril
+		mostrarBarril: false,
+		barril: [{ x: 400, y: 10 }],
+		dirBarril: { x: 0, y: 9 },
+	};
+}
+function drawGame(Mundo) {
+	if (isEmpty(Mundo.lifes)) {
+		drawLifes(Mundo.lifes);
+		htmlScore.innerHTML = "";
+		gameOver(Mundo);
+	} else {
+		//Dibujamos el mapa
+		forEach(mapa, (row, i) => {
+			forEach(row, (cell, j) => {
+				if (cell == 1) {
+					image(Mundo.margenImagen, j * SIZE, i * SIZE, SIZE, SIZE);
+				}
+				if (cell == 0) {
+					noStroke();
+					fill(Mundo.fondoInicial);
+					rect(j * SIZE, i * SIZE, SIZE, SIZE);
+				}
+			});
+		});
+		drawScore(Mundo.score);
+		drawLifes(Mundo.lifes);
+		drawComida(Mundo.food);
+		drawTrampas(Mundo);
+		drawSnake(Mundo);
+		if (Mundo.mostrarDonkey) {
+			drawDonkey(Mundo);
+		}
+		if (Mundo.mostrarBarril) {
+			drawBarril(Mundo.barril);
+		}
+	}
+}
+
+// ///////// Manejadores de Eventos
+
+// Esto se ejecuta en cada tic del reloj. Con esto se pueden hacer animaciones
+function onTic(Mundo) {
+	frameRate(velInicial + Mundo.score / 3);
+	if (comerSnake(Mundo.snake, Mundo.food, Mundo.dir)) {
+		if (Mundo.dir.x == 1) {
+			return update(Mundo, {
+				food: [{ x: getRandomX(), y: getRandomY() }],
+				snake: cons(
+					{ x: first(Mundo.snake).x + 1, y: first(Mundo.snake).y },
+					Mundo.snake,
+				),
+				score: Mundo.score + 1,
+			});
+		} else if (Mundo.dir.x == -1) {
+			return update(Mundo, {
+				food: [{ x: getRandomX(), y: getRandomY() }],
+				snake: cons(
+					{ x: first(Mundo.snake).x - 1, y: first(Mundo.snake).y },
+					Mundo.snake,
+				),
+				score: Mundo.score + 1,
+			});
+		} else if (Mundo.dir.y == 1) {
+			return update(Mundo, {
+				food: [{ x: getRandomX(), y: getRandomY() }],
+				snake: cons(
+					{ x: first(Mundo.snake).x, y: first(Mundo.snake).y + 1 },
+					Mundo.snake,
+				),
+				score: Mundo.score + 1,
+			});
+		} else if (Mundo.dir.y == -1) {
+			return update(Mundo, {
+				food: [{ x: getRandomX(), y: getRandomY() }],
+				snake: cons(
+					{ x: first(Mundo.snake).x, y: first(Mundo.snake).y - 1 },
+					Mundo.snake,
+				),
+				score: Mundo.score + 1,
+			});
+		}
+	}
+	if (
+		gestorColisiones(Mundo) ||
+		gestionarMordidas(Mundo.snake, first(Mundo.snake)) ||
+		gestionarTrampas(Mundo.snake, Mundo.trampas)
+	) {
+		return update(Mundo, {
 			snake: [
 				{ x: 7, y: 5 },
 				{ x: 6, y: 5 },
 			],
-			dir: { x: 1, y: 0 },
-			food: [{ x: 6, y: 4 }],
 			trampas: [
-				{ x: 4, y: 11 },
-				{ x: 20, y: 10 },
-				{ x: 30, y: 20 },
-				{ x: 25, y: 17 },
+				{ x: getRandomX(), y: getRandomY() },
+				{ x: getRandomX(), y: getRandomY() },
+				{ x: getRandomX(), y: getRandomY() },
+				{ x: getRandomX(), y: getRandomY() },
 			],
-			mostrarDonkey: !1,
-			donkey: [{ x: 0, y: 0 }],
-			dirDonkey: { x: 5, y: 0 },
-			mostrarBarril: !1,
-			barril: [{ x: 400, y: 10 }],
-			dirBarril: { x: 0, y: 9 },
+
+			dir: { x: 1, y: 0 },
+			lifes: rest(Mundo.lifes),
 		});
-}
-function drawGame(e) {
-	isEmpty(e.lifes)
-		? (drawLifes(e.lifes), (htmlScore.innerHTML = ""), gameOver(e))
-		: (forEach(mapa, (a, r) => {
-				forEach(a, (a, n) => {
-					1 == a && image(e.margenImagen, n * SIZE, r * SIZE, SIZE, SIZE),
-						0 == a &&
-							(noStroke(), fill(e.fondoInicial), rect(n * SIZE, r * SIZE, SIZE, SIZE));
-				});
-		  }),
-		  drawScore(e.score),
-		  drawLifes(e.lifes),
-		  drawComida(e.food),
-		  drawTrampas(e),
-		  drawSnake(e),
-		  1 == e.mostrarDonkey && drawDonkey(e),
-		  e.mostrarBarril && drawBarril(e.barril));
-}
-function onTic(e) {
-	if ((frameRate(velInicial + e.score / 3), comerSnake(e.snake, e.food, e.dir))) {
-		if (1 == e.dir.x)
-			return update(e, {
-				food: [{ x: getRandomX(), y: getRandomY() }],
-				snake: cons({ x: first(e.snake).x + 1, y: first(e.snake).y }, e.snake),
-				score: e.score + 1,
-			});
-		if (-1 == e.dir.x)
-			return update(e, {
-				food: [{ x: getRandomX(), y: getRandomY() }],
-				snake: cons({ x: first(e.snake).x - 1, y: first(e.snake).y }, e.snake),
-				score: e.score + 1,
-			});
-		if (1 == e.dir.y)
-			return update(e, {
-				food: [{ x: getRandomX(), y: getRandomY() }],
-				snake: cons({ x: first(e.snake).x, y: first(e.snake).y + 1 }, e.snake),
-				score: e.score + 1,
-			});
-		if (-1 == e.dir.y)
-			return update(e, {
-				food: [{ x: getRandomX(), y: getRandomY() }],
-				snake: cons({ x: first(e.snake).x, y: first(e.snake).y - 1 }, e.snake),
-				score: e.score + 1,
-			});
 	}
-	return gestorColisiones(e) ||
-		gestionarMordidas(e.snake, first(e.snake)) ||
-		gestionarTrampas(e.snake, e.trampas) ||
-		(e.mostrarBarril && gestorColisionesBarril(e.barril, e.snake))
-		? update(e, {
-				snake: [
-					{ x: 7, y: 5 },
-					{ x: 6, y: 5 },
-				],
-				trampas: [
-					{ x: getRandomX(), y: getRandomY() },
-					{ x: getRandomX(), y: getRandomY() },
-					{ x: getRandomX(), y: getRandomY() },
-					{ x: getRandomX(), y: getRandomY() },
-				],
-				dir: { x: 1, y: 0 },
-				lifes: rest(e.lifes),
-		  })
-		: 1 == gestorColisionesDonkey(e)
-		? update(e, {
-				dirDonkey: { x: -5, y: 0 },
-				snake: moveSnake(e.snake, e.dir),
-				donkey: moveDonkey(e.donkey, e.dirDonkey),
-		  })
-		: 2 == gestorColisionesDonkey(e)
-		? update(e, {
-				dirDonkey: { x: 5, y: 0 },
-				snake: moveSnake(e.snake, e.dir),
-				donkey: moveDonkey(e.donkey, e.dirDonkey),
-		  })
-		: e.score >= 13 && e.score < 19
-		? (world.setAttribute("style", 'background-image: url("img/acuario.jpg");'),
-		  update(e, {
-				fondoInicial: "blue",
-				comidaImagen: pez,
-				margenImagen: algas,
-				trampaImagen: mina,
-				snake: moveSnake(e.snake, e.dir),
-		  }))
-		: e.score >= 19 && e.score < 26
-		? (world.setAttribute("style", 'background-image: url("img/llamarada.jpg");'),
-		  frameRate(velInicial + e.score / 2),
-		  update(e, {
-				fondoInicial: "#e85d04",
-				comidaImagen: carne,
-				margenImagen: fuego,
-				colorSnake: "#3f0c0c",
-				trampaImagen: hoguera,
-				snake: moveSnake(e.snake, e.dir),
-		  }))
-		: (first(e.donkey).x >= 401 && first(e.donkey).x <= 679 && 5 == e.dirDonkey.x) ||
-		  (first(e.donkey).x <= 400 && first(e.donkey).x >= 20 && -5 == e.dirDonkey.x)
-		? update(e, {
-				barril: moveBarril(e.barril, e.dirBarril),
-				snake: moveSnake(e.snake, e.dir),
-				donkey: moveDonkey(e.donkey, e.dirDonkey),
-		  })
-		: first(e.donkey).x < 20 || first(e.donkey).x > 679
-		? update(e, {
-				snake: moveSnake(e.snake, e.dir),
-				donkey: moveDonkey(e.donkey, e.dirDonkey),
-				barril: [{ x: 400, y: 10 }],
-				mostrarBarril: !1,
-		  })
-		: e.score >= 26
-		? update(e, {
-				mostrarDonkey: !0,
-				donkey: moveDonkey(e.donkey, e.dirDonkey),
-				snake: moveSnake(e.snake, e.dir),
-		  })
-		: update(e, { snake: moveSnake(e.snake, e.dir) });
+	if (Mundo.mostrarBarril && gestorColisionesBarril(Mundo.barril, Mundo.snake)) {
+		return update(Mundo, {
+			snake: [
+				{ x: 7, y: 5 },
+				{ x: 6, y: 5 },
+			],
+			trampas: [
+				{ x: getRandomX(), y: getRandomY() },
+				{ x: getRandomX(), y: getRandomY() },
+				{ x: getRandomX(), y: getRandomY() },
+				{ x: getRandomX(), y: getRandomY() },
+			],
+
+			dir: { x: 1, y: 0 },
+			lifes: rest(Mundo.lifes),
+		});
+	}
+	if (gestorColisionesDonkey(Mundo) == 1) {
+		return update(Mundo, {
+			dirDonkey: { x: -5, y: 0 },
+			snake: moveSnake(Mundo.snake, Mundo.dir),
+			donkey: moveDonkey(Mundo.donkey, Mundo.dirDonkey),
+		});
+	}
+	if (gestorColisionesDonkey(Mundo) == 2) {
+		return update(Mundo, {
+			dirDonkey: { x: 5, y: 0 },
+			snake: moveSnake(Mundo.snake, Mundo.dir),
+			donkey: moveDonkey(Mundo.donkey, Mundo.dirDonkey),
+		});
+	}
+	// Gestor de Dificultad y Cambio de Mundos
+	if (Mundo.score >= 12 && Mundo.score < 18) {
+		world.setAttribute("style", 'background-image: url("img/acuario.jpg");');
+		return update(Mundo, {
+			fondoInicial: "blue",
+			comidaImagen: pez,
+			margenImagen: algas,
+			trampaImagen: mina,
+			snake: moveSnake(Mundo.snake, Mundo.dir),
+		});
+	}
+	if (Mundo.score >= 18 && Mundo.score < 25) {
+		world.setAttribute("style", 'background-image: url("img/llamarada.jpg");');
+		frameRate(velInicial + Mundo.score / 2);
+		return update(Mundo, {
+			fondoInicial: "#e85d04",
+			comidaImagen: carne,
+			margenImagen: fuego,
+			colorSnake: "#3f0c0c",
+			trampaImagen: hoguera,
+			snake: moveSnake(Mundo.snake, Mundo.dir),
+		});
+	}
+	if (
+		(first(Mundo.donkey).x >= 401 &&
+			first(Mundo.donkey).x <= 679 &&
+			Mundo.dirDonkey.x == 5) ||
+		(first(Mundo.donkey).x <= 400 &&
+			first(Mundo.donkey).x >= 20 &&
+			Mundo.dirDonkey.x == -5)
+	) {
+		return update(Mundo, {
+			barril: moveBarril(Mundo.barril, Mundo.dirBarril),
+			snake: moveSnake(Mundo.snake, Mundo.dir),
+			donkey: moveDonkey(Mundo.donkey, Mundo.dirDonkey),
+		});
+	}
+	if (first(Mundo.donkey).x < 20 || first(Mundo.donkey).x > 679) {
+		return update(Mundo, {
+			snake: moveSnake(Mundo.snake, Mundo.dir),
+			donkey: moveDonkey(Mundo.donkey, Mundo.dirDonkey),
+			barril: [{ x: 400, y: 10 }],
+			mostrarBarril: false,
+		});
+	}
+	if (Mundo.score >= 25) {
+		// Aparece el simio
+		return update(Mundo, {
+			mostrarDonkey: true,
+			donkey: moveDonkey(Mundo.donkey, Mundo.dirDonkey),
+			snake: moveSnake(Mundo.snake, Mundo.dir),
+		});
+	}
+	return update(Mundo, {
+		snake: moveSnake(Mundo.snake, Mundo.dir),
+	});
 }
-function onMouseEvent(e, a) {
-	return update(e, {});
+
+//Implemente esta función si quiere que su programa reaccione a eventos del mouse
+function onMouseEvent(Mundo, event) {
+	return update(Mundo, {});
 }
-function onKeyEvent(e, a) {
-	return 1 == e.dir.x && a == UP_ARROW
-		? update(e, { dir: { y: -1, x: 0 } })
-		: 1 == e.dir.x && a == DOWN_ARROW
-		? update(e, { dir: { y: 1, x: 0 }, direction: "DOWN" })
-		: -1 == e.dir.x && a == UP_ARROW
-		? update(e, { dir: { y: -1, x: 0 } })
-		: -1 == e.dir.x && a == DOWN_ARROW
-		? update(e, { dir: { y: 1, x: 0 }, direction: "DOWN" })
-		: 1 == e.dir.y && a == LEFT_ARROW
-		? update(e, { dir: { y: 0, x: -1 }, direction: "LEFT" })
-		: 1 == e.dir.y && a == RIGHT_ARROW
-		? update(e, { dir: { y: 0, x: 1 }, direction: "RIGHT" })
-		: -1 == e.dir.y && a == LEFT_ARROW
-		? update(e, { dir: { y: 0, x: -1 }, direction: "LEFT" })
-		: -1 == e.dir.y && a == RIGHT_ARROW
-		? update(e, { dir: { y: 0, x: 1 }, direction: "RIGHT" })
-		: update(e, {});
+
+// Cambiamos solo la dirección de la serpiente De acuerdo a la tecla presionada
+// la serpiente se movera en la direccion que le digamos hasta volver a cambiarle la direccion
+function onKeyEvent(Mundo, keyCode) {
+	if (Mundo.dir.x == 1 && keyCode == UP_ARROW) {
+		return update(Mundo, { dir: { y: -1, x: 0 } });
+	}
+	if (Mundo.dir.x == 1 && keyCode == DOWN_ARROW) {
+		return update(Mundo, { dir: { y: 1, x: 0 }, direction: "DOWN" });
+	}
+	if (Mundo.dir.x == -1 && keyCode == UP_ARROW) {
+		return update(Mundo, { dir: { y: -1, x: 0 } });
+	}
+	if (Mundo.dir.x == -1 && keyCode == DOWN_ARROW) {
+		return update(Mundo, { dir: { y: 1, x: 0 }, direction: "DOWN" });
+	}
+
+	if (Mundo.dir.y == 1 && keyCode == LEFT_ARROW) {
+		return update(Mundo, { dir: { y: 0, x: -1 }, direction: "LEFT" });
+	}
+	if (Mundo.dir.y == 1 && keyCode == RIGHT_ARROW) {
+		return update(Mundo, { dir: { y: 0, x: 1 }, direction: "RIGHT" });
+	}
+	if (Mundo.dir.y == -1 && keyCode == LEFT_ARROW) {
+		return update(Mundo, { dir: { y: 0, x: -1 }, direction: "LEFT" });
+	}
+	if (Mundo.dir.y == -1 && keyCode == RIGHT_ARROW) {
+		return update(Mundo, { dir: { y: 0, x: 1 }, direction: "RIGHT" });
+	}
+	return update(Mundo, {});
 }
