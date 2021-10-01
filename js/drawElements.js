@@ -1,6 +1,10 @@
 // ///////// Dibujar Los Elementos del Juego En La Pantalla
 
-//Dibujamos nuestra Snake
+/**
+ * Agrega el elemento value al comienzo de la lista.
+ * @param {Array <Object>} Mundo
+ * @returns {void}
+ */
 function drawSnake(Mundo) {
 	fill(Mundo.colorSnake);
 	forEach(Mundo.snake, (pos) => {
@@ -8,40 +12,62 @@ function drawSnake(Mundo) {
 	});
 }
 
-// Funcion que me dibuja la comida en el mapa
+/**
+ * Funcion que me dibuja la comida en el mapa
+ * @param {Array} food
+ * @returns {void}
+ */
 function drawComida(food) {
-	fill("#0a8652");
 	forEach(food, (pos) => {
-		// rect(pos.x * dx + dx / 2, pos.y * dy + dy / 2, dx, dy, 10);
 		image(Mundo.comidaImagen, pos.x * dx + dx / 2, pos.y * dy + dy / 2, dx, dy);
 	});
 }
 
-// Funcion que me dibuja las trampas
+/**
+ * Función que me dibuja las trampas en el mapa
+ * @param {array <object>} mundo
+ * @returns {Void}
+ */
 function drawTrampas(Mundo) {
 	forEach(Mundo.trampas, (pos) => {
 		image(Mundo.trampaImagen, pos.x * dx + dx / 2, pos.y * dy + dy / 2, dx, dy);
 	});
 }
 
-//Dibujamos el numero de vidas que contenga la lista
+/**
+ *funcion que me dibuja el número de vidas en el mapa
+ * @param {array } lifes
+ * @returns {Void}
+ */
 function drawLifes(lifes) {
 	htmlLifes.innerHTML = lifes;
 }
 
-//Dibujamos el marcador del juego
+/**
+ * Funcion que me dibuja el marcador en el mapa
+ * @param {array} score
+ * @returns {Void}
+ */
 function drawScore(score) {
 	htmlScore.innerHTML = "Puntaje: " + score;
 }
 
-//
+/**
+ * Funcion que me dibuja los barriles en el mapa
+ * @param {array } barril
+ * @returns {void}
+ */
 function drawBarril(barril) {
 	forEach(barril, (pos) => {
 		image(imgBarril, pos.x, pos.y, SIZE * 2, SIZE * 2);
 	});
 }
 
-//
+/**
+ * Funcion que me dibuja el simio en el mapa
+ * @param {array <object>} mundo
+ * @returns {Void}
+ */
 function drawDonkey(Mundo) {
 	const head = first(Mundo.donkey);
 	if (head.x >= 400 && head.x <= 440) {
