@@ -4,76 +4,189 @@ function getRandomX() {
 function getRandomY() {
 	return Math.floor(12 * Math.random() + 3);
 }
-function gameOver(o) {
-	(maxScore.innerHTML = o.score), modalGameOver.setAttribute("style", "top:0;"), noLoop();
+
+/**
+ * funcion que me dibuja el juego terminado en el mapa
+ * @param {Array } gameover
+ * @returns {Void}
+ */
+function gameOver(Mundo) {
+	(maxScore.innerHTML = Mundo.score),
+		modalGameOver.setAttribute("style", "top:0;"),
+		noLoop();
 }
+
+/**
+ * Funcion que se ejecuta para parar el juego o colocarlo en pausa
+ * @param {}
+ * @returns {Void}
+ */
 function stopGame() {
 	frameRate(0);
 }
+
+/**
+ * Funcion que se ejecuta para parar renaudar el juego
+ * @param {}
+ * @returns {Void}
+ */
 function playGame() {
 	frameRate(velInicial);
 }
-function moveSnake(o, n) {
-	const r = first(o);
-	return cons({ x: r.x + n.x, y: r.y + n.y }, o.slice(0, length(o) - 1));
+
+/**
+ * funcion que me ejecuta el movimiento de la serpiente
+ * @param {Array<Object>} snake
+ * @param {Array<Object>} dir
+ * @returns {Array}
+ */
+function moveSnake(snake, dir) {
+	const head = first(snake);
+	return cons(
+		{ x: head.x + dir.x, y: head.y + dir.y },
+		snake.slice(0, length(snake) - 1),
+	);
 }
-function gestorColisiones(o) {
-	const n = first(o.snake);
+
+/**
+ * Funcion que me ejecuta la colisión de la serpiente .
+ * @param {Array<Object>} Mundo
+ * @returns {Namber}
+ */
+function gestorColisiones(Mundo) {
+	const head = first(Mundo.snake);
 	if (
-		n.x < 1.6 ||
-		n.x * dx >= WIDTH - 1.6 * SIZE ||
-		n.y < 1.6 ||
-		n.y * dy >= HEIGHT - 1.6 * SIZE
+		head.x < 1.6 ||
+		head.x * dx >= WIDTH - 1.6 * SIZE ||
+		head.y < 1.6 ||
+		head.y * dy >= HEIGHT - 1.6 * SIZE
 	)
 		return !0;
 }
-function gestionarMordidas(o, n) {
-	return (
-		!isEmpty(o) &&
-		(JSON.stringify(first(rest(o))) === JSON.stringify(n) ||
-			gestionarMordidas(rest(o), n))
-	);
+
+/**
+ * Funcion que me indica si serpiente se mordio
+ * @param {Array} tail
+ * @param {Array} head
+ * @returns {Boolean} True | False
+ */
+function gestionarMordidas(tail, head) {
+	if (isEmpty(tail)) {
+		return false;
+	} else if (JSON.stringify(first(rest(tail))) === JSON.stringify(head)) {
+		return true;
+	} else {
+		return gestionarMordidas(rest(tail), head);
+	}
 }
-function comerSnake(o, n, r) {
-	const a = first(o),
-		e = first(n);
-	return a.x == e.x && a.y == e.y;
+
+/**
+ * Funcion que indica si la serpiente comio
+ * @param {Array} snake
+ * @param {Array} food
+ * @param {Array} dir
+ * @returns {Boolean} true | false
+ */
+function comerSnake(snake, food, dir) {
+	const head = first(snake);
+	const firstFood = first(food);
+	if (head.x == firstFood.x && head.y == firstFood.y) {
+		return true;
+	} else {
+		return false;
+	}
 }
-function gestionarTrampas(o, n) {
-	const r = first(o),
-		a = first(n);
-	return !isEmpty(n) && ((r.x == a.x && r.y == a.y) || gestionarTrampas(o, rest(n)));
+
+/**
+ * funcion de gestionar las trampas en el mapa
+ * @param {Array<Object>} snake
+ * @param {Array<Object>} trampas
+ * @returns {Boolean} True | False
+ */
+function gestionarTrampas(snake, trampas) {
+	const head = first(snake);
+	const firstTrampa = first(trampas);
+	if (isEmpty(trampas)) {
+		return false;
+	}
+	if (head.x == firstTrampa.x && head.y == firstTrampa.y) {
+		return true;
+	} else {
+		return gestionarTrampas(snake, rest(trampas));
+	}
 }
-function moveDonkey(o, n) {
-	const r = first(o);
-	return cons({ x: r.x + n.x, y: r.y + n.y }, o.slice(0, length(o) - 1));
-}
-function moveBarril(o, n) {
-	const r = first(o);
-	return cons({ x: r.x + n.x, y: r.y + n.y }, o.slice(0, length(o) - 1));
-}
-function gestorColisionesDonkey(o) {
-	const n = first(o.donkey);
-	return n.x + SIZE >= WIDTH - SIZE ? 1 : n.x < 1.6 ? 2 : void 0;
-}
-function gestorColisionesBarril(o, n) {
-	const r = first(o),
-		a = first(n);
-	return (
-		!isEmpty(n) &&
-		(null == a
-			? gestorColisionesBarril(o, rest(n))
-			: (r.y <= 20 * a.y &&
-					r.y + 60 >= 20 * a.y &&
-					r.x <= 20 * a.x &&
-					r.x + 60 >= 20 * a.x) ||
-			  gestorColisionesBarril(o, rest(n)))
+
+/**
+ * Funcion que le da movimiento al simio
+ * @param {Array} donkey
+ * @param {Array} dir
+ * @returns {Array}
+ */
+function moveDonkey(donkey, dir) {
+	const head = first(donkey);
+	return cons(
+		{ x: head.x + dir.x, y: head.y + dir.y },
+		donkey.slice(0, length(donkey) - 1),
 	);
 }
 
-//Se precarga las imagenes del juego
+/**
+ * Funcion que le da movimiento a los barriles en el mapa
+ * @param {Array} barril
+ * @param {Array} dir
+ * @returns {Array}
+ */
+function moveBarril(barril, dir) {
+	const head = first(barril);
+	return cons(
+		{ x: head.x + dir.x, y: head.y + dir.y },
+		barril.slice(0, length(barril) - 1),
+	);
+}
 
-//Se precarga las imagenes del juego
+/**
+ * su función es gestionar las colisiones del simio en el mapa
+ * @param {Array<object>} Mundo
+ * @returns {Number} 1 | 2
+ */
+function gestorColisionesDonkey(Mundo) {
+	const head = first(Mundo.donkey);
+	if (head.x + SIZE >= WIDTH - SIZE) {
+		return 1;
+	}
+	if (head.x < 1.6) {
+		return 2;
+	}
+}
+
+/**
+ * su función es gestionar las colisiones de los barriles en el mapa
+ * @param {Array<Object>} barril
+ * @param {Array<Object>} snake
+ * @returns {Boolean} True | False
+ */
+function gestorColisionesBarril(barril, snake) {
+	const head = first(barril);
+	const headSnake = first(snake);
+	console.log(headSnake);
+	if (isEmpty(snake)) {
+		return false;
+	}
+	if (headSnake == null) {
+		return gestorColisionesBarril(barril, rest(snake));
+	}
+	if (
+		head.y <= headSnake.y * 20 &&
+		head.y + 80 >= headSnake.y * 20 &&
+		head.x <= headSnake.x * 20 &&
+		head.x + 80 >= headSnake.x * 20
+	) {
+		return true;
+	}
+	return gestorColisionesBarril(barril, rest(snake));
+}
+
+//Se definen las variables de las imagenes del juego
 let marioBrick;
 let arbolJungla;
 let manzana;
@@ -89,6 +202,11 @@ let donkeyNormal;
 let donkeyBarril;
 let imgBarril;
 
+/**
+ * su función es precargar las imagenes que se van a usar en el juego
+ * @param {}
+ * @returns {Void}
+ */
 function preload() {
 	marioBrick = loadImage("img/bricksMario.png");
 	manzana = loadImage("img/manzana.png");
