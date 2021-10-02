@@ -2,15 +2,20 @@
 let { append, cons, first, isEmpty, isList, length, rest, map, forEach } =
 	functionalLight;
 
-// Actualiza los atributos del objeto y retorna una copia profunda
+/**
+ * Su función es actualizar los atributos del objeto y retorna una copia profunda
+ * @param {Array} data
+ * @param {Array} attribute
+ * @returns {object}
+ */
 function update(data, attribute) {
 	return Object.assign({}, data, attribute);
 }
 
-// ///////// Propiedades del Mundo inicial
+// Propiedades del Mundo inicial
 let Mundo = {};
 
-// ///////// Funcion inicial del juego
+// Funcion inicial del juego
 function setup() {
 	frameRate(velInicial);
 	createCanvas(WIDTH, HEIGHT);
@@ -48,6 +53,12 @@ function setup() {
 		dirBarril: { x: 0, y: 9 },
 	};
 }
+
+/**
+ * se encarga de Dibujar en el canvas todos los elementos visuales del juego
+ * @param {Object} Mundo
+ * @returns {Void}
+ */
 function drawGame(Mundo) {
 	if (isEmpty(Mundo.lifes)) {
 		drawLifes(Mundo.lifes);
@@ -83,7 +94,11 @@ function drawGame(Mundo) {
 
 // ///////// Manejadores de Eventos
 
-// Esto se ejecuta en cada tic del reloj. Con esto se pueden hacer animaciones
+/**
+ * su función es ejecutar cada tic del reloj, Actualizando todos los valores del mapa
+ * @param {Object} Mundo
+ * @returns {Array<object>}
+ */
 function onTic(Mundo) {
 	frameRate(velInicial + Mundo.score / 3);
 	if (comerSnake(Mundo.snake, Mundo.food, Mundo.dir)) {
@@ -235,13 +250,23 @@ function onTic(Mundo) {
 	});
 }
 
-//Implemente esta función si quiere que su programa reaccione a eventos del mouse
+/**
+ * esta funcion capta los eventos de nuestro mouse
+ * @param {Array<object>} Mundo
+ * @param {*} event
+ * @returns {object}
+ */
 function onMouseEvent(Mundo, event) {
 	return update(Mundo, {});
 }
 
-// Cambiamos solo la dirección de la serpiente De acuerdo a la tecla presionada
-// la serpiente se movera en la direccion que le digamos hasta volver a cambiarle la direccion
+/**
+ * Cambiamos solo la dirección de la serpiente De acuerdo a la tecla presionada
+ * la serpiente se movera en la direccion que le digamos hasta volver a cambiarle la direccion
+ * @param {Array<object>} Mundo
+ * @param {*} keyCode
+ * @returns {object}
+ */
 function onKeyEvent(Mundo, keyCode) {
 	if (Mundo.dir.x == 1 && keyCode == UP_ARROW) {
 		return update(Mundo, { dir: { y: -1, x: 0 } });
