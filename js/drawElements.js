@@ -2,7 +2,7 @@
 
 /**
  * Agrega el elemento value al comienzo de la lista.
- * @param {Array <Object>} Mundo
+ * @param {Array<object>} Mundo
  * @returns {void}
  */
 function drawSnake(Mundo) {
@@ -25,7 +25,7 @@ function drawComida(food) {
 
 /**
  * Función que me dibuja las trampas en el mapa
- * @param {array <object>} mundo
+ * @param {Array<object>} mundo
  * @returns {Void}
  */
 function drawTrampas(Mundo) {
@@ -36,7 +36,7 @@ function drawTrampas(Mundo) {
 
 /**
  *funcion que me dibuja el número de vidas en el mapa
- * @param {array } lifes
+ * @param {Array} lifes
  * @returns {Void}
  */
 function drawLifes(lifes) {
@@ -45,7 +45,7 @@ function drawLifes(lifes) {
 
 /**
  * Funcion que me dibuja el marcador en el mapa
- * @param {array} score
+ * @param {Array} score
  * @returns {Void}
  */
 function drawScore(score) {
@@ -54,7 +54,7 @@ function drawScore(score) {
 
 /**
  * Funcion que me dibuja los barriles en el mapa
- * @param {array } barril
+ * @param {Array} barril
  * @returns {void}
  */
 function drawBarril(barril) {
@@ -65,7 +65,7 @@ function drawBarril(barril) {
 
 /**
  * Funcion que me dibuja el simio en el mapa
- * @param {array <object>} mundo
+ * @param {Array<object>} mundo
  * @returns {Void}
  */
 function drawDonkey(Mundo) {

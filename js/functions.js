@@ -36,8 +36,8 @@ function playGame() {
 
 /**
  * funcion que me ejecuta el movimiento de la serpiente
- * @param {Array<Object>} snake
- * @param {Array<Object>} dir
+ * @param {Array<object>} snake
+ * @param {Array<object>} dir
  * @returns {Array}
  */
 function moveSnake(snake, dir) {
@@ -50,7 +50,7 @@ function moveSnake(snake, dir) {
 
 /**
  * Funcion que me ejecuta la colisión de la serpiente .
- * @param {Array<Object>} Mundo
+ * @param {Array<object>} Mundo
  * @returns {Namber}
  */
 function gestorColisiones(Mundo) {
@@ -99,8 +99,8 @@ function comerSnake(snake, food, dir) {
 
 /**
  * funcion de gestionar las trampas en el mapa
- * @param {Array<Object>} snake
- * @param {Array<Object>} trampas
+ * @param {Array<object>} snake
+ * @param {Array<object>} trampas
  * @returns {Boolean} True | False
  */
 function gestionarTrampas(snake, trampas) {
@@ -161,8 +161,8 @@ function gestorColisionesDonkey(Mundo) {
 
 /**
  * su función es gestionar las colisiones de los barriles en el mapa
- * @param {Array<Object>} barril
- * @param {Array<Object>} snake
+ * @param {Array<object>} barril
+ * @param {Array<object>} snake
  * @returns {Boolean} True | False
  */
 function gestorColisionesBarril(barril, snake) {
